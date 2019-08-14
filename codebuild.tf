@@ -83,7 +83,7 @@ resource "aws_codebuild_project" "dockerbuild" {
   }
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "aws/codebuild/docker:18.09.0"
+    image                       = "${var.build_image}"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode             = true
@@ -93,7 +93,7 @@ resource "aws_codebuild_project" "dockerbuild" {
     location              = "http://github.com/${var.git_organization}/${var.git_repo}/tree/${var.git_branch}"
     buildspec             = "${var.dockerbuild_buildspec_path}"
     git_clone_depth       = 1
-    report_build_status   = false
+    # report_build_status   = false
     insecure_ssl          = false
     report_build_status   = false
   }
@@ -150,7 +150,7 @@ resource "aws_codebuild_project" "unittest" {
   }
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "aws/codebuild/python:3.6.5"
+    image                       = "${var.unittest_image}"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode             = false
@@ -160,14 +160,14 @@ resource "aws_codebuild_project" "unittest" {
     location              = "http://github.com/${var.git_organization}/${var.git_repo}/tree/${var.git_branch}"
     buildspec             = "${var.unittest_buildspec_path}"
     git_clone_depth       = 1
-    report_build_status   = false
+    # report_build_status   = false
     insecure_ssl          = false
     report_build_status   = false
   }
   vpc_config = {
-    security_group_ids = ["sg-ebf7eb87", "sg-eaf7eb86"]
-    subnets = ["subnet-4654242f"]
-    vpc_id = "vpc-4d364624"
+    security_group_ids = "${var.unittest_security_groups}"
+    subnets = "${var.unittest_subnets}"
+    vpc_id = "${var.unittest_vpc}"
   }
   tags = {
     Name = "${var.name}_${var.environment}_unit_tests"
