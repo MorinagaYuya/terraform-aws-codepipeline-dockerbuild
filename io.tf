@@ -50,7 +50,3 @@ variable unittest_security_groups {
 variable unittest_buildspec_path {}
 
 variable dockerbuild_buildspec_path {}
-
-locals {
-  module_version = "1.0"
-}

@@ -7,7 +7,6 @@ resource "aws_iam_role" "codepipeline_role" {
   tags = {
     Name = "${var.name}_${var.environment}"
     Created_by = "terraform"
-    Module    = "cicd_${local.module_version}"
   }
 }
 
@@ -25,7 +24,6 @@ resource "aws_s3_bucket" "artifacts" {
   tags = {
     Name = "${var.name}_${var.environment}"
     Created_by = "terraform"
-    Module    = "cicd_${local.module_version}"
   }
 }
 
@@ -49,7 +47,7 @@ resource "aws_codepipeline" "deploy_pipeline" {
 
   stage {
     name = "Source"
-    action = {
+    action {
       name = "DownloadSource"
       category = "Source"
       configuration = {
@@ -69,7 +67,7 @@ resource "aws_codepipeline" "deploy_pipeline" {
 
   stage {
     name = "RunTests"
-    action = {
+    action {
       category = "Test"
       configuration = {
         ProjectName = "${aws_codebuild_project.unittest.name}"
@@ -85,7 +83,7 @@ resource "aws_codepipeline" "deploy_pipeline" {
 
   stage {
     name = "BuildImage"
-    action = {
+    action {
       category = "Build"
       configuration = {
         ProjectName = "${aws_codebuild_project.dockerbuild.name}"
@@ -113,7 +111,6 @@ resource "aws_ssm_parameter" "github_webhook_secret" {
   tags = {
     Name = "${var.name}_${var.environment}"
     Created_by = "terraform"
-    Module    = "cicd_${local.module_version}"
   }
 }
 

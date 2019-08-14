@@ -8,7 +8,6 @@ resource "aws_ecr_repository" "docker_repo" {
   tags = {
     Name = "${var.name}_${var.environment}"
     Created_by = "terraform"
-    Module    = "cicd_${local.module_version}"
   }
 }
 
@@ -47,7 +46,6 @@ resource "aws_cloudwatch_log_group" "dockerbuild" {
   tags = {
     Name = "dockerbuild_${var.name}_${var.environment}"
     Created_by = "terraform"
-    Module    = "cicd_${local.module_version}"
   }
 }
 
@@ -58,7 +56,6 @@ resource "aws_iam_role" "dockerbuild_role" {
   tags = {
     Name = "${var.name}_${var.environment}_dockerbuild_role"
     Created_by = "terraform"
-    Module    = "cicd_${local.module_version}"
   }
 }
 
@@ -77,7 +74,7 @@ resource "aws_codebuild_project" "dockerbuild" {
   artifacts {
     type = "NO_ARTIFACTS"
   }
-  cache = {
+  cache {
     location = "${aws_s3_bucket.artifacts.bucket}/${var.name}/${var.environment}"
     type = "S3"
   }
@@ -101,7 +98,6 @@ resource "aws_codebuild_project" "dockerbuild" {
     Name = "${var.name}_${var.environment}_docker_build"
     #created_t = "${timestamp()}"
     Created_by = "terraform"
-    Module    = "cicd_${local.module_version}"
   }
 }
 
@@ -115,7 +111,6 @@ resource "aws_cloudwatch_log_group" "unittest" {
   tags = {
     Name = "unittest_${var.name}_${var.environment}"
     Created_by = "terraform"
-    Module    = "cicd_${local.module_version}"
   }
 }
 
@@ -126,7 +121,6 @@ resource "aws_iam_role" "unittest_role" {
   tags = {
     Name = "${var.name}_${var.environment}_unittest_role"
     Created_by = "terraform"
-    Module    = "cicd_${local.module_version}"
   }
 }
 
@@ -145,7 +139,7 @@ resource "aws_codebuild_project" "unittest" {
   artifacts {
     type = "NO_ARTIFACTS"
   }
-  cache = {
+  cache {
     type = "NO_CACHE"
   }
   environment {
@@ -164,7 +158,7 @@ resource "aws_codebuild_project" "unittest" {
     insecure_ssl          = false
     report_build_status   = false
   }
-  vpc_config = {
+  vpc_config {
     security_group_ids = "${var.unittest_security_groups}"
     subnets = "${var.unittest_subnets}"
     vpc_id = "${var.unittest_vpc}"
@@ -172,6 +166,5 @@ resource "aws_codebuild_project" "unittest" {
   tags = {
     Name = "${var.name}_${var.environment}_unit_tests"
     Created_by = "terraform"
-    Module    = "cicd_${local.module_version}"
   }
 }
