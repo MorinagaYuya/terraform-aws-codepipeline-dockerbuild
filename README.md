@@ -29,7 +29,7 @@ provider "github" {
 
 module "conterec_production_cicd" {
   source                     = "halfdanrump/codepipeline-dockerbuild/aws"
-  version                    = "12.6.1"
+  version                    = "12.6.2"
   name                       = "my_service"
   account_id                 = "my_account_id"
   environment                = "production"
