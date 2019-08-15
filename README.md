@@ -6,6 +6,9 @@ Little module for setting up a CI pipeline that triggers with a github webhook a
 ## Getting your Docker image to the right ECR repository
 This module does not control the contents of the buildspec file used to build the Docker image, so make sure configure the buildspec file with the right ECR repository. The module creates an ECR repository with the name `"${var.name}_${var.environment}"`. In the case of `name=api` and `environment=production`, the created ECR repo will have the name `api_production`.
 
+## ECR Image Retention Policy
+Untagged images that are older than 14 days are untagged. Every time the CI pipeline build the docker image, the new image will be tagged with `latest`, and the previous image will be untagged and hence removed after 14 days.
+
 ## Example
 
 ```hcl
@@ -29,7 +32,7 @@ provider "github" {
 
 module "conterec_production_cicd" {
   source                     = "halfdanrump/codepipeline-dockerbuild/aws"
-  version                    = "12.6.2"
+  version                    = "12.6.3"
   name                       = "my_service"
   account_id                 = "my_account_id"
   environment                = "production"
