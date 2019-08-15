@@ -35,7 +35,7 @@ variable git_organization {
   default     = "SnapDish"
   }
 
-variable build_image {
+variable dockerbuild_image {
   type        = "string"
   description = "Name of the image that will be used to in the piepline build stage."
   default     = "aws/codebuild/docker:18.09.0"
