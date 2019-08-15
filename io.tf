@@ -65,11 +65,13 @@ variable unittest_vpc {
 }
 
 variable unittest_subnets {
+  type        = list(string)
   description = "List of subnet ids for the test runner"
   default     = []
 }
 
 variable unittest_security_groups {
+  type        = list(string)
   description = "List of security group ids for the test runner"
   default     = []
 }
