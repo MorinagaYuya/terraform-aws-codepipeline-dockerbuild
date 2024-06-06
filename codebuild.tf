@@ -87,7 +87,7 @@ resource "aws_codebuild_project" "dockerbuild" {
   }
   source {
     type                  = "GITHUB"
-    location              = "http://github.com/${var.git_organization}/${var.git_repo}/tree/${var.git_branch}"
+    location              = "https://github.com/${var.git_organization}/${var.git_repo}/tree/${var.git_branch}"
     buildspec             = "${var.dockerbuild_buildspec_path}"
     git_clone_depth       = 1
     # report_build_status   = false
